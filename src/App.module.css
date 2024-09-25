@@ -1,0 +1,21 @@
+.app{
+    background-color: skyblue;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+.container {
+    position: relative;
+    width: 36rem;
+    height: 100%;
+    overflow: auto;
+
+}
+.title {
+    text-align: center;
+}
+

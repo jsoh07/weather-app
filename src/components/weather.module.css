@@ -1,0 +1,35 @@
+.section {
+    justify-content: center;
+    position: relative;
+    display: flex;
+    margin: 10px;
+}
+.sectionContainer {
+    position: relative;
+}
+
+.searchBox {
+    width: 24rem;
+    height: 2.5rem;
+    border-radius: 2rem;
+    border: none;
+    outline: none;
+    padding-left: 25px;
+}
+.searchIcon {
+    position: absolute;
+    right: 80px; /* 아이콘 위치 조정 */
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    fill: currentColor; /* 현재 텍스트 색상을 따르게 설정 */
+    width: 24px; /* 원하는 크기로 조정 */
+    height: 24px; /* 원하는 크기로 조정 */
+}
+.cityCard{
+    background: rgba(255, 255, 255, 0.445);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
