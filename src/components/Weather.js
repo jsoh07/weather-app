@@ -1,27 +1,47 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import style from "./weather.module.css";
+import WeatherApi from "./WeatherApi";
 
 function Weather() {
     const [city, setCity] = useState("");
-    const [weather, setWeather] = useState(null);
+    const cities = ['Seoul', 'Bucheon'];
+    const [weatherData, setWeatherData] = useState([]);
     const [error, setError] = useState("");
-
-    const fetchWeather = async () => {
-        if (!city) return;
-
-        const apiKey = '41bfebb43013855d638a925fc455c3e5';
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
-        try {
-            const response = await axios.get(url);
-            setWeather(response.data);
+    
+    const fetchWeatherData = async() => {
+        try{
+            const weatherMap = cities.map(city =>
+                WeatherApi.fetchWeather(`/weather?q=${city}`)
+            );
+            const results = await Promise.all(weatherMap);
+            setWeatherData(results);
             setError('');
-        } catch (err) {
+        }catch(err){
             setError('날씨 정보를 찾을 수 없습니다.');
-            setWeather(null);
+            setWeatherData([]);
         }
     };
+
+    useEffect(() => {
+        fetchWeatherData(cities);
+    }, []);
+
+    const fetchSearchWeather = async () => {
+        if (!city) return;
+        //https://api.openweathermap.org/data/2.5/forecast endPoint
+        //https://api.openweathermap.org/data/2.5/forecast?q={city name}&appid={API key}&units=metric 요청예시
+
+        try {
+            const data = await WeatherApi.fetchWeather(`/weather?q=${city}`);
+            setWeatherData(prevData => [...prevData, data]);
+            setCity('');
+            setError('');
+        } catch (err) {
+            alert('날씨 정보를 찾을 수 없습니다.');
+            setCity('');
+        }
+    };
+    
 
     return (
         <div className={style.container}>
@@ -30,13 +50,13 @@ function Weather() {
                     <input
                         type="text"
                         className={style.searchBox}
-                        placeholder="도시 이름을 입력하세요."
+                        placeholder="도시 이름을 영문으로 입력해주세요."
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && fetchWeather()}
+                        onKeyPress={(e) => e.key === 'Enter' && fetchSearchWeather()}
                     />
                     <svg
-                        onClick={fetchWeather}
+                        onClick={fetchSearchWeather}
                         className={style.searchIcon}
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -48,19 +68,19 @@ function Weather() {
                     </svg>
                 </div>
             </div>
-            <div>
+            <div className={style.sectionCard}>
                 {error && <p>{error}</p>}
-                {weather && (
-                    <div className={style.cityCard}>
+                {weatherData.map((weather, index) => (
+                    <div key={index} className={style.cityCard}>
                         <h2>{weather.name}</h2>
                         <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt="weather icon" />
                         <p>{weather.main.temp} °C</p>
-                        <p>{weather.weather[0].description}</p>
-                        <p>습도: {weather.main.humidity}%</p>
+                        {/* <p>{weather.weather[0].description}</p> */}
+                        {/* <p>습도: {weather.main.humidity}%</p>
                         <p>풍속: {weather.wind.speed} m/s</p>
-                        <p>기압: {weather.main.pressure} hPa</p>
+                        <p>기압: {weather.main.pressure} hPa</p> */}
                     </div>
-                )}
+                ))}
             </div>
         </div>
     );
