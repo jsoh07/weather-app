@@ -5,6 +5,22 @@
     margin: 10px;
     overflow: hidden;
 }
+
+.sectionLocal h2, p {
+    display: flex;
+    justify-content: center;
+}
+
+.tempDiff {
+    display: flex;  
+    justify-content: center;
+    align-items: center;
+}
+
+.tempDiff p {
+    margin: 0 10px;
+}
+
 .sectionContainer {
     position: relative;
 }
@@ -17,6 +33,7 @@
     outline: none;
     padding-left: 25px;
 }
+
 .searchIcon {
     position: absolute;
     right: 80px; /* 아이콘 위치 조정 */
@@ -27,17 +44,26 @@
     width: 24px; /* 원하는 크기로 조정 */
     height: 24px; /* 원하는 크기로 조정 */
 }
+
 .sectionCard {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     justify-items: center;
-    max-height: 80vh; /* 필요한 경우 높이 조정 */
-    overflow-y: auto; /* 필요에 따라 세로 스크롤 가능하게 설정 */
+    max-height: 80vh; /* 필요에 따라 높이 조정 */
+    overflow-y: auto; /* 수직 스크롤 가능 */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
 }
+
+.sectionCard::-webkit-scrollbar {
+    display: none; /* Chrome, Safari에서 스크롤바 숨기기 */
+}
+
 .sectionCard p {
     text-align: center;
 }
-.cityCard{
+
+.cityCard {
     background: rgba(255, 255, 255, 0.445);
     border-radius: 10px;
     padding: 20px;
@@ -50,22 +76,29 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
 }
-.cityCard img{
+
+.cityCard img {
     margin: 10px 0;
 }
+
 .cityCard h2 {
     margin: 5px 0;
 }
+
 .cityCard p {
     margin: 5px 0;
 }
-/* 스크롤바 숨기기 */
-.sectionCard::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
 
-.sectionCard {
-    -ms-overflow-style: none; /* Internet Explorer and Edge */
-    scrollbar-width: none; /* Firefox */
+.popup {
+    background: rgb(255, 255, 255);
+    border-radius: 10px;
+    width: 180px;
+    height: 360px;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    top: 148px;
+    left: 100px;
 }

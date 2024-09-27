@@ -7,7 +7,7 @@ function App() {
     <div className={style.app}>
       <div className={style.container}>
         <div className={style.title}>
-          <h1>Weather</h1>
+          <h1>나의 위치</h1>
         </div>
         <Weather />
       </div>
