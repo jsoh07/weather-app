@@ -16,14 +16,20 @@ function WeatherPopup({ weather, onClose }) {
     return (
         <div className={style.popup}>
             <div className={style.popupContent}>
-                <span className={style.close} onClick={onClose}>&times;</span>
+                <span className={style.popupClose} onClick={onClose}>
+                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="popup-close" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+                </span>
                 <h2>{weather.name}</h2>
+                <p>최고기온 : {weather.main.temp_max.toFixed(1)}</p>
+                <p>최저기온 : {weather.main.temp_min.toFixed(1)}</p>
+                <p>체감온도 : {weather.main.feels_like.toFixed(1)}</p>
+                <br/>
                 <p>일출: {timeConvert(weather.sys.sunrise)}</p>
                 <p>일몰: {timeConvert(weather.sys.sunset)}</p>
+                <br />
                 <p>습도: {weather.main.humidity}%</p>
-                <p>풍속: {weather.wind.speed} m/s</p>
-                <p>기압: {weather.main.pressure} hPa</p>
                 <p>구름: {weather.clouds.all}%</p>
+                <p>풍속: {weather.wind.speed} m/s</p>
             </div>
         </div>
     );
@@ -130,10 +136,10 @@ function Weather() {
                 {localLocation && (
                     <div className={style.sectionLocal}>
                         <h2>{localLocation.name}</h2>
-                        <p>{localLocation.main.temp} °C</p>
+                        <p>{localLocation.main.temp.toFixed(1)} °C</p>
                         <div className={style.tempDiff}>
-                            <p>최고:{localLocation.main.temp_max} °C</p>
-                            <p>최저:{localLocation.main.temp_min} °C</p>
+                            <p>최고: {localLocation.main.temp_max.toFixed(1)} °C</p>
+                            <p>최저: {localLocation.main.temp_min.toFixed(1)} °C</p>
                         </div>
                     </div>
                 )}        
@@ -164,14 +170,20 @@ function Weather() {
                 <div className={style.sectionCard}>
                     {weatherData.map((weather, index) => (
                         <div key={index} className={style.cityCard} onClick={() => openPopup(weather)}>
+                            <span onClick={(e) => { e.stopPropagation(); removeCity(weather.name); }} className={style.deleteButton}>
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="popup-close" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+                            </span>
                             <h2>{weather.name}</h2>
                             <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt="weather icon" />
-                            <p>{weather.main.temp} °C</p>
-                            <button onClick={(e) => { e.stopPropagation(); removeCity(weather.name); }}>삭제</button>
+                            <p>{weather.main.temp.toFixed(1)} °C</p>
                         </div>
                     ))}
                 </div>
-                {selectedWeather && <WeatherPopup weather={selectedWeather} onClose={closePopup} />}
+                {selectedWeather && (
+                    <div className={style.popupOverlay}>
+                        <WeatherPopup weather={selectedWeather} onClose={closePopup} />
+                    </div>   
+                )}
             </div>
         </>
     );
